@@ -5,7 +5,7 @@ const config = require("./config");
 async function startServer() {
   const app = express();
 
-  await loaders(app);
+  await loaders(app, express);
 
   app.listen(config.port, (err) => {
     if (err) {
