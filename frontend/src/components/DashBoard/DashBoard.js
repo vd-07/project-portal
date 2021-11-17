@@ -1,15 +1,7 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Divider,
-  Form,
-  Grid,
-  Segment,
-  Icon,
-  Card,
-  TextArea,
-} from "semantic-ui-react";
+import { Button, Divider, Grid, Segment, Icon, Card } from "semantic-ui-react";
 import "./Dashboard.css";
+import ProjectDescription from "./ProjectDescription";
 import ProjectName from "./ProjectName";
 
 export default class DashBoard extends Component {
@@ -20,6 +12,8 @@ export default class DashBoard extends Component {
     phoneNum: "11111",
     emailId: "abc@xyz",
     selectedProjectIndex: 0,
+    addingNewProject: false,
+    prData: {},
     projectData: [
       {
         projectName: "1",
@@ -50,13 +44,13 @@ export default class DashBoard extends Component {
 
   componentDidMount() {
     // TODO: show select a project at start
-    // TODO: break this component
+    // TODO: login
     this.setState(this.state.projectData[0]);
   }
 
   handleChange = (type, value) => {
-    console.log("HERE");
-    console.log({ type: value });
+    // console.log("HERE");
+    // console.log({ type: value });
     switch (type) {
       case "projectName":
         this.setState({ projectName: value });
@@ -78,6 +72,52 @@ export default class DashBoard extends Component {
   projectCardClicked = (index) => {
     this.setState(this.state.projectData[index]);
     this.setState({ selectedProjectIndex: index });
+  };
+
+  addNewProject = () => {
+    this.setState({ addingNewProject: true });
+    this.setState({
+      projectName: "",
+      description: "",
+      phoneNum: "",
+      emailId: "",
+    });
+    this.setState({ selectedProjectIndex: -1 });
+  };
+
+  handleNewProjectSave = (data) => {
+    var temp = this.state.projectList;
+    temp.push(data.projectName);
+    this.setState({ projectList: temp });
+
+    temp = this.state.projectData;
+    temp.push(data);
+    this.setState({ projectData: temp });
+    this.setState({ selectedProjectIndex: temp.length - 1 });
+    this.setState({ addingNewProject: false });
+  };
+
+  deleteCurrentProject = () => {
+    if (
+      this.state.projectData.length > this.state.selectedProjectIndex &&
+      this.state.selectedProjectIndex >= 0
+    ) {
+      var temp = this.state.projectList;
+      temp.splice(this.state.selectedProjectIndex, 1);
+      this.setState({ projectList: temp });
+
+      temp = this.state.projectData;
+      temp.splice(this.state.selectedProjectIndex, 1);
+      this.setState({ projectData: temp });
+
+      if (this.state.selectedProjectIndex >= temp.length) {
+        this.setState({ selectedProjectIndex: temp.length - 1 });
+      }
+
+      if (temp.length === 0) {
+        this.addNewProject();
+      }
+    }
   };
 
   render() {
@@ -109,59 +149,36 @@ export default class DashBoard extends Component {
             </div>
             <center>
               <div style={{ marginTop: 20 }}>
-                <Button icon="plus" content="Add New Project" />
+                <Button
+                  icon="plus"
+                  content="Add New Project"
+                  onClick={this.addNewProject}
+                />
               </div>
             </center>
           </Grid.Column>
 
           <Grid.Column verticalAlign="middle">
-            {/* <Button content="Sign up" icon="signup" size="big" /> */}
-            <Form>
-              <Form.Field>
-                <label>Project Name</label>
-                <input
-                  value={this.state.projectName}
-                  placeholder="Project Name"
-                  onChange={(e) =>
-                    this.handleChange("projectName", e.target.value)
-                  }
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Description</label>
-                <TextArea
-                  value={this.state.description}
-                  placeholder="Enter Project Description"
-                  onChange={(e) =>
-                    this.handleChange("description", e.target.value)
-                  }
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Phone Number</label>
-                <input
-                  value={this.state.phoneNum}
-                  placeholder="Enter 10 digits number"
-                  onChange={(e) =>
-                    this.handleChange("phoneNum", e.target.value)
-                  }
-                />
-              </Form.Field>
-              <Form.Field>
-                <label>Email ID</label>
-                <input
-                  value={this.state.emailId}
-                  placeholder="Email ID"
-                  onChange={(e) => this.handleChange("emailId", e.target.value)}
-                />
-              </Form.Field>
-            </Form>
-            <div className="action-buttons">
-              <div className="inner-action-buttons-container">
-                <Button>Save</Button>
-                <Button>Delete</Button>
-              </div>
-            </div>
+            {this.state.addingNewProject ? (
+              <ProjectDescription
+                projectData={{
+                  projectName: this.state.projectName,
+                  description: this.state.description,
+                  phoneNum: this.state.phoneNum,
+                  emailId: this.state.emailId,
+                }}
+                handleChange={this.handleChange}
+                handleNewProjectSave={this.handleNewProjectSave}
+              />
+            ) : (
+              <ProjectDescription
+                projectData={
+                  this.state.projectData[this.state.selectedProjectIndex]
+                }
+                handleChange={this.handleChange}
+                deleteCurrentProject={this.deleteCurrentProject}
+              />
+            )}
           </Grid.Column>
         </Grid>
 
