@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Button, Divider, Grid, Segment, Icon, Card } from "semantic-ui-react";
+import {
+  Button,
+  Divider,
+  Grid,
+  Segment,
+  Icon,
+  Card
+} from "semantic-ui-react";
 import "./Dashboard.css";
 import ProjectDescription from "./ProjectDescription";
 import ProjectName from "./ProjectName";
@@ -124,68 +131,78 @@ export default class DashBoard extends Component {
     var list = this.state.projectList;
 
     return (
-      <Segment placeholder>
-        <Grid columns={2} relaxed="very" stackable>
-          <Grid.Column>
-            <div className="project-list-title">
-              <center>
-                <h3>Projects List</h3>
-              </center>
+      <div>
+        <center>
+          <h1 className="dashboard-title">
+            <Icon className="dashboard-title-icon" name="student" />
+            PROJECT DASHBOARD
+            </h1>
+        </center>
+        <Segment placeholder>
+          <Grid columns={2} relaxed="very" stackable>
+            <Grid.Column>
+              <div className="project-list-title">
+                <center>
+                  <h3>Projects List</h3>
+                </center>
 
-              <Card.Group
-                style={{ marginTop: 20, maxHeight: 500, overflowY: "scroll" }}
-              >
-                {list.map((name, i) => (
-                  <ProjectName
-                    projectName={name}
-                    index={i}
-                    cardClicked={this.projectCardClicked}
-                    bgColor={
-                      i === this.state.selectedProjectIndex ? "#767676" : "#fff"
-                    }
-                  />
-                ))}
-              </Card.Group>
-            </div>
-            <center>
-              <div style={{ marginTop: 20 }}>
-                <Button
-                  icon="plus"
-                  content="Add New Project"
-                  onClick={this.addNewProject}
-                />
+                <Card.Group
+                  style={{ marginTop: 20, maxHeight: 500, overflowY: "scroll" }}
+                >
+                  {list.map((name, i) => (
+                    <ProjectName
+                      projectName={name}
+                      index={i}
+                      cardClicked={this.projectCardClicked}
+                      bgColor={
+                        i === this.state.selectedProjectIndex
+                          ? "#767676"
+                          : "#fff"
+                      }
+                    />
+                  ))}
+                </Card.Group>
               </div>
-            </center>
-          </Grid.Column>
+              <center>
+                <div style={{ marginTop: 20 }}>
+                  <Button
+                    icon="plus"
+                    content="Add New Project"
+                    onClick={this.addNewProject}
+                  />
+                </div>
+              </center>
+            </Grid.Column>
 
-          <Grid.Column verticalAlign="middle">
-            {this.state.addingNewProject ? (
-              <ProjectDescription
-                projectData={{
-                  projectName: this.state.projectName,
-                  description: this.state.description,
-                  phoneNum: this.state.phoneNum,
-                  emailId: this.state.emailId,
-                }}
-                handleChange={this.handleChange}
-                handleNewProjectSave={this.handleNewProjectSave}
-              />
-            ) : (
-              <ProjectDescription
-                projectData={
-                  this.state.projectData[this.state.selectedProjectIndex]
-                }
-                handleChange={this.handleChange}
-                deleteCurrentProject={this.deleteCurrentProject}
-              />
-            )}
-          </Grid.Column>
-        </Grid>
+            <Grid.Column verticalAlign="middle">
+              {this.state.addingNewProject ? (
+                <ProjectDescription
+                  projectData={{
+                    projectName: this.state.projectName,
+                    description: this.state.description,
+                    phoneNum: this.state.phoneNum,
+                    emailId: this.state.emailId,
+                  }}
+                  handleChange={this.handleChange}
+                  handleNewProjectSave={this.handleNewProjectSave}
+                />
+              ) : (
+                <ProjectDescription
+                  projectData={
+                    this.state.projectData[this.state.selectedProjectIndex]
+                  }
+                  handleChange={this.handleChange}
+                  deleteCurrentProject={this.deleteCurrentProject}
+                />
+              )}
+            </Grid.Column>
+          </Grid>
 
-        <Divider className="divider" vertical>
-          <Icon disabled name="arrow alternate circle right" />{" "}
-        </Divider>
-      </Segment>
+          <Divider className="divider" vertical>
+            <Icon disabled name="arrow alternate circle right" />{" "}
+          </Divider>
+        </Segment>
+      </div>
     );
   }
 }
