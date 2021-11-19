@@ -7,6 +7,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 module.exports = {
   port: process.env.PORT,
   databaseURL: process.env.DATABASE_URI,
+  NODE_ENV: process.env.NODE_ENV
 //   paypal: {
 //     publicKey: process.env.PAYPAL_PUBLIC_KEY,
 //     secretKey: process.env.PAYPAL_SECRET_KEY,
