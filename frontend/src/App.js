@@ -1,16 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
-import { Container } from 'semantic-ui-react';
-import  DashBoard from './components/DashBoard/DashBoard'
+import  DashBoard from './components/DashBoard/DashBoard';
+import React from 'react';
 
 function App() {
   return (
     <div className="App">
-      <Container>
+      <div className="Container">
         <DashBoard />
-      </Container>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
