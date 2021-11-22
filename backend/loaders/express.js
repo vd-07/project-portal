@@ -19,6 +19,9 @@ module.exports = async function (app, express) {
       saveUninitialized: false,
       HttpOnly: true,
       Path: "/",
+      cookie: {
+        maxAge: 60000
+      }
     })
   );
 

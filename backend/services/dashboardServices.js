@@ -61,7 +61,7 @@ module.exports = {
   },
   deleteProject: async (req, res) => {
     const { projectId } = req.body;
-    console.log(projectId);
+    // console.log(req);
     try {
       const deletedProject = await User.updateOne(
         { emailId: req.user.emailId },
@@ -78,7 +78,7 @@ module.exports = {
         });
       }
     } catch (err) {
-      res.status(res.setStatus || 500).send({
+      res.status(500).send({
         message: err.message,
       });
     }

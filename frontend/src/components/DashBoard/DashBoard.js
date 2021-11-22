@@ -29,13 +29,17 @@ export default class DashBoard extends Component {
 
   async componentDidMount() {
     // TODO: show select a project at start
-    const res = await axios.post("users/login", {
-      emailId: "dubey.vivek@gmail.com",
-      password: "abcdef",
-    }, {
-      withCredentials: true
-    });
-    
+    const res = await axios.post(
+      "users/login",
+      {
+        emailId: "dubey.vivek@gmail.com",
+        password: "abcdef",
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
     // console.log(res.headers);
     // const res = {status: 200};
     if (res.status === 200) {
@@ -52,7 +56,7 @@ export default class DashBoard extends Component {
           description: data.projectList[i].description,
         });
       }
-      
+
       this.setState({ projectData: temp });
     }
     // this.setState(this.state.projectData[0]);
@@ -112,11 +116,8 @@ export default class DashBoard extends Component {
       this.state.projectData.length > this.state.selectedProjectIndex &&
       this.state.selectedProjectIndex >= 0
     ) {
-      var temp = this.state.projectList;
-      temp.splice(this.state.selectedProjectIndex, 1);
-      this.setState({ projectList: temp });
 
-      temp = this.state.projectData;
+      let temp = this.state.projectData;
       temp.splice(this.state.selectedProjectIndex, 1);
       this.setState({ projectData: temp });
 
@@ -131,19 +132,24 @@ export default class DashBoard extends Component {
   };
 
   deleteCurrentProject = () => {
-    axios.delete("dashboard/delete", { withCredentials: true }, {
-      projectId: this.state.projectData[this.state.selectedProjectIndex]._id
-    }).then((res) => {
-      if(res.status === 200) {
-        this.updateAfterDeletion();
-      } else {
-        // TODO: warn for login
-      }
-    }).catch(err => {
-      // TODO: handle this also
-      console.log(err.message);
-
-    });
+    const body = {
+      projectId: this.state.projectData[this.state.selectedProjectIndex].id,
+    };
+    // console.log(this.state.projectData);
+    console.log(body);
+    axios
+      .delete("dashboard/delete", {data: body})
+      .then((res) => {
+        if (res.status === 200) {
+          this.updateAfterDeletion();
+        } else {
+          // TODO: warn for login
+        }
+      })
+      .catch((err) => {
+        // TODO: handle this also
+        console.log(err.message);
+      });
   };
 
   render() {
