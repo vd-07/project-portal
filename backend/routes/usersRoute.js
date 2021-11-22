@@ -56,7 +56,7 @@ router.post("/register", forwardAuthenticated, (req, res) => {
                   "You are now registered and can log in"
                 );
                 res.status(200).send({
-                  message: "Succesfully registered! Please login"
+                  message: "Succesfully registered! Please login",
                 });
               })
               .catch((err) => console.log(err));
@@ -69,10 +69,25 @@ router.post("/register", forwardAuthenticated, (req, res) => {
 
 // Login
 router.post("/login", forwardAuthenticated, (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/users/login",
-    failureFlash: true,
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    } else {
+      // console.log(user);
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.status(200).send({
+          message: "Successfully logged in!"
+        });
+      });
+    }
   })(req, res, next);
 });
 
@@ -80,7 +95,7 @@ router.post("/login", forwardAuthenticated, (req, res, next) => {
 router.get("/logout", (req, res) => {
   req.logout();
   res.status(200).send({
-    message: "Succesfully signed out"
+    message: "Succesfully signed out",
   });
 });
 

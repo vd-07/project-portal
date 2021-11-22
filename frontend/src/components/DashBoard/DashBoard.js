@@ -1,63 +1,66 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Divider,
-  Grid,
-  Segment,
-  Icon,
-  Card
-} from "semantic-ui-react";
+import { Button, Divider, Grid, Segment, Icon, Card } from "semantic-ui-react";
 import "./Dashboard.css";
 import ProjectDescription from "./ProjectDescription";
 import ProjectName from "./ProjectName";
+import axios from "axios";
+// import Cookies from "js-cookie";
 
 export default class DashBoard extends Component {
   state = {
-    projectList: ["project 1", "Project 2", "Project 3", "Project 4"],
-    projectName: "None",
-    description: "None",
-    phoneNum: "11111",
-    emailId: "abc@xyz",
-    selectedProjectIndex: 0,
+    projectName: null,
+    description: null,
+    phoneNum: null,
+    emailId: null,
+    selectedProjectIndex: -1,
     addingNewProject: false,
-    prData: {},
-    projectData: [
-      {
-        projectName: "1",
-        description: "sfsf",
-        phoneNum: "1546651",
-        emailId: "asd@gmail.com",
-      },
-      {
-        projectName: "2",
-        description: "sfddf",
-        phoneNum: "645664",
-        emailId: "dfasfs@gmail.com",
-      },
-      {
-        projectName: "3",
-        description: "sgbsdfg",
-        phoneNum: "76865875",
-        emailId: "edgbesrg@gmail.com",
-      },
-      {
-        projectName: "4",
-        description: "sgdfgv",
-        phoneNum: "289646963463",
-        emailId: "cnrusrujynfs@gmail.com",
-      },
-    ],
+    projectData: [],
   };
 
-  componentDidMount() {
+  getProfessorDetails = async () => {
+    // document.cookie=`sid=${Cookies.get('connect.sid')}`;
+    const res = await axios.get("dashboard/", { withCredentials: true });
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      // TODO: get all project from the backend
+    }
+  };
+
+  async componentDidMount() {
     // TODO: show select a project at start
-    // TODO: login
-    this.setState(this.state.projectData[0]);
+    const res = await axios.post("users/login", {
+      emailId: "dubey.vivek@gmail.com",
+      password: "abcdef",
+    }, {
+      withCredentials: true
+    });
+    
+    // console.log(res.headers);
+    // const res = {status: 200};
+    if (res.status === 200) {
+      const data = await this.getProfessorDetails();
+      console.log(data);
+      let temp = [];
+      for (let i = 0; i < data.projectList.length; ++i) {
+        temp.push({
+          id: data.projectList[i]._id,
+          professorName: data.professorName,
+          emailId: data.emailId,
+          phoneNum: data.mobileNum,
+          projectName: data.projectList[i].projectName,
+          description: data.projectList[i].description,
+        });
+      }
+      
+      this.setState({ projectData: temp });
+    }
+    // this.setState(this.state.projectData[0]);
   }
 
   handleChange = (type, value) => {
     // console.log("HERE");
-    // console.log({ type: value });
+    console.log({ type: value });
     switch (type) {
       case "projectName":
         this.setState({ projectName: value });
@@ -104,7 +107,7 @@ export default class DashBoard extends Component {
     this.setState({ addingNewProject: false });
   };
 
-  deleteCurrentProject = () => {
+  updateAfterDeletion = () => {
     if (
       this.state.projectData.length > this.state.selectedProjectIndex &&
       this.state.selectedProjectIndex >= 0
@@ -127,8 +130,24 @@ export default class DashBoard extends Component {
     }
   };
 
+  deleteCurrentProject = () => {
+    axios.delete("dashboard/delete", { withCredentials: true }, {
+      projectId: this.state.projectData[this.state.selectedProjectIndex]._id
+    }).then((res) => {
+      if(res.status === 200) {
+        this.updateAfterDeletion();
+      } else {
+        // TODO: warn for login
+      }
+    }).catch(err => {
+      // TODO: handle this also
+      console.log(err.message);
+
+    });
+  };
+
   render() {
-    var list = this.state.projectList;
+    var list = this.state.projectData;
 
     return (
       <div>
@@ -136,7 +155,7 @@ export default class DashBoard extends Component {
           <h1 className="dashboard-title">
             <Icon className="dashboard-title-icon" name="student" />
             PROJECT DASHBOARD
-            </h1>
+          </h1>
         </center>
         <Segment placeholder>
           <Grid columns={2} relaxed="very" stackable>
@@ -151,8 +170,9 @@ export default class DashBoard extends Component {
                 >
                   {list.map((name, i) => (
                     <ProjectName
-                      projectName={name}
+                      projectName={name.projectName}
                       index={i}
+                      key={i}
                       cardClicked={this.projectCardClicked}
                       bgColor={
                         i === this.state.selectedProjectIndex
@@ -188,9 +208,12 @@ export default class DashBoard extends Component {
                 />
               ) : (
                 <ProjectDescription
-                  projectData={
-                    this.state.projectData[this.state.selectedProjectIndex]
-                  }
+                  projectData={{
+                    projectName: this.state.projectName,
+                    description: this.state.description,
+                    phoneNum: this.state.phoneNum,
+                    emailId: this.state.emailId,
+                  }}
                   handleChange={this.handleChange}
                   deleteCurrentProject={this.deleteCurrentProject}
                 />

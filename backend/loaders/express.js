@@ -8,15 +8,17 @@ const session = require("express-session");
 require("../config/passport")(passport);
 
 module.exports = async function (app, express) {
-  app.use(cors());
+  app.use(cors({ credentials: true, origin: true }));
   app.use(require("morgan")("dev"));
   app.use(express.json());
   // Express session
   app.use(
     session({
       secret: "secret",
-      resave: true,
-      saveUninitialized: true,
+      resave: false,
+      saveUninitialized: false,
+      HttpOnly: true,
+      Path: "/",
     })
   );
 

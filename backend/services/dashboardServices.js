@@ -61,6 +61,7 @@ module.exports = {
   },
   deleteProject: async (req, res) => {
     const { projectId } = req.body;
+    console.log(projectId);
     try {
       const deletedProject = await User.updateOne(
         { emailId: req.user.emailId },
