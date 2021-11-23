@@ -37,7 +37,7 @@ module.exports = {
     try {
       const objProject = {
         projectName: req.body.projectName,
-        description: req.body.projectDescription,
+        description: req.body.description,
       };
 
       const updatedProject = await User.updateOne(

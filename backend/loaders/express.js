@@ -2,7 +2,6 @@ const cors = require("cors");
 const dashboardRoute = require("../routes/dashboardRoute");
 const usersRoute = require("../routes/usersRoute");
 const passport = require("passport");
-const flash = require("connect-flash");
 const session = require("express-session");
 
 require("../config/passport")(passport);
@@ -20,7 +19,7 @@ module.exports = async function (app, express) {
       HttpOnly: true,
       Path: "/",
       cookie: {
-        maxAge: 60000
+        maxAge: 600000000
       }
     })
   );
@@ -28,9 +27,6 @@ module.exports = async function (app, express) {
   // Passport middleware
   app.use(passport.initialize());
   app.use(passport.session());
-
-  // Connect flash
-  app.use(flash());
 
   // importing routes
   app.use("/dashboard", dashboardRoute);

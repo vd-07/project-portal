@@ -4,7 +4,6 @@ import "./Dashboard.css";
 import ProjectDescription from "./ProjectDescription";
 import ProjectName from "./ProjectName";
 import axios from "axios";
-// import Cookies from "js-cookie";
 
 export default class DashBoard extends Component {
   state = {
@@ -27,44 +26,40 @@ export default class DashBoard extends Component {
     }
   };
 
-  async componentDidMount() {
-    // TODO: show select a project at start
-    const res = await axios.post(
-      "users/login",
-      {
-        emailId: "dubey.vivek@gmail.com",
-        password: "abcdef",
-      },
-      {
-        withCredentials: true,
-      }
-    );
+  processProjectData = (data) => {
+    console.log(data);
+    let temp = [];
+    for (let i = 0; i < data.projectList.length; ++i) {
+      temp.push({
+        id: data.projectList[i]._id,
+        professorName: data.professorName,
+        emailId: data.emailId,
+        phoneNum: data.mobileNum,
+        projectName: data.projectList[i].projectName,
+        description: data.projectList[i].description,
+      });
+    }
 
+    this.setState({ projectData: temp });
+  };
+
+  async componentDidMount() {
     // console.log(res.headers);
     // const res = {status: 200};
-    if (res.status === 200) {
-      const data = await this.getProfessorDetails();
-      console.log(data);
-      let temp = [];
-      for (let i = 0; i < data.projectList.length; ++i) {
-        temp.push({
-          id: data.projectList[i]._id,
-          professorName: data.professorName,
-          emailId: data.emailId,
-          phoneNum: data.mobileNum,
-          projectName: data.projectList[i].projectName,
-          description: data.projectList[i].description,
-        });
-      }
 
-      this.setState({ projectData: temp });
+    // FIXME: either as student or as professor
+    
+    if (200 === 200) {
+      const data = await this.getProfessorDetails();
+      // console.log(data);
+      this.processProjectData(data);
     }
     // this.setState(this.state.projectData[0]);
   }
 
   handleChange = (type, value) => {
     // console.log("HERE");
-    console.log({ type: value });
+    // console.log({ type: value });
     switch (type) {
       case "projectName":
         this.setState({ projectName: value });
@@ -99,16 +94,21 @@ export default class DashBoard extends Component {
     this.setState({ selectedProjectIndex: -1 });
   };
 
-  handleNewProjectSave = (data) => {
-    var temp = this.state.projectList;
-    temp.push(data.projectName);
-    this.setState({ projectList: temp });
-
-    temp = this.state.projectData;
-    temp.push(data);
-    this.setState({ projectData: temp });
-    this.setState({ selectedProjectIndex: temp.length - 1 });
+  updateAfterSaving = () => {
+    this.setState({ selectedProjectIndex: this.state.projectData - 1 });
     this.setState({ addingNewProject: false });
+  };
+
+  handleNewProjectSave = async (data) => {
+    try {
+      let res = await axios.post("dashboard/create", data);
+      if (res.status === 200) {
+        this.processProjectData(res.data);
+        this.updateAfterSaving();
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   updateAfterDeletion = () => {
@@ -116,7 +116,6 @@ export default class DashBoard extends Component {
       this.state.projectData.length > this.state.selectedProjectIndex &&
       this.state.selectedProjectIndex >= 0
     ) {
-
       let temp = this.state.projectData;
       temp.splice(this.state.selectedProjectIndex, 1);
       this.setState({ projectData: temp });
@@ -138,7 +137,7 @@ export default class DashBoard extends Component {
     // console.log(this.state.projectData);
     console.log(body);
     axios
-      .delete("dashboard/delete", {data: body})
+      .delete("dashboard/delete", { data: body })
       .then((res) => {
         if (res.status === 200) {
           this.updateAfterDeletion();

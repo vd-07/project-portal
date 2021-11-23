@@ -30,12 +30,12 @@ router.post("/register", forwardAuthenticated, (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.send(errors);
+    res.status(403).send(errors);
   } else {
     User.findOne({ emailId: emailId }).then((user) => {
       if (user) {
         errors.push({ msg: "emailId already exists" });
-        res.send(errors);
+        res.status(403).send(errors);
       } else {
         const newUser = new User({
           professorName,
@@ -51,12 +51,8 @@ router.post("/register", forwardAuthenticated, (req, res) => {
             newUser
               .save()
               .then((user) => {
-                req.flash(
-                  "success_msg",
-                  "You are now registered and can log in"
-                );
                 res.status(200).send({
-                  message: "Succesfully registered! Please login",
+                  msg: "Succesfully registered! Please login",
                 });
               })
               .catch((err) => console.log(err));

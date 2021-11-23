@@ -16,10 +16,11 @@
   display: flex;
 }
 
-.ui.placeholder.segment .button {
+/* FIXME: rleative position of buttons */
+/* .ui.placeholder.segment .button {
   margin-left: 0 !important;
   margin-right: 10px !important;
-}
+} */
 
 .inner-action-buttons-container {
   display: flex;
