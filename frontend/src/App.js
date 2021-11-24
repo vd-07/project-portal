@@ -4,7 +4,7 @@ import StudentDashboard from "./components/Student/StudentDashboard";
 import Home from "./components/Login/Home";
 import React from "react";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URI;
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
