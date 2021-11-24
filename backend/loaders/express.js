@@ -10,6 +10,7 @@ module.exports = async function (app, express) {
   app.use(cors({ credentials: true, origin: true }));
   app.use(require("morgan")("dev"));
   app.use(express.json());
+  app.set('trust proxy', 1);
   // Express session
   app.use(
     session({
@@ -19,6 +20,7 @@ module.exports = async function (app, express) {
       HttpOnly: true,
       Path: "/",
       cookie: {
+        secure: true,
         maxAge: 600000000
       }
     })
