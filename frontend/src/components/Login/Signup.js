@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Button, Divider, Form, Grid, Segment, Icon } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
 import "./Style.css";
 
 export default class Signup extends Component {
@@ -133,7 +133,12 @@ export default class Signup extends Component {
                 size="medium"
               />
               <br />
-              <Button content="Proceed as student" icon="play" size="medium" />
+              <Button
+                onClick={this.props.redirectToStudentDashboard}
+                content="Proceed as student"
+                icon="play"
+                size="medium"
+              />
             </Grid.Column>
           </Grid>
 

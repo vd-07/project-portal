@@ -71,7 +71,7 @@ router.post("/login", forwardAuthenticated, (req, res, next) => {
     }
     if (!user) {
       return res.status(404).send({
-        message: "User not found",
+        message: "User not found / Incorrect Password",
       });
     } else {
       // console.log(user);

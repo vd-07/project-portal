@@ -1,5 +1,6 @@
 import "./App.css";
 import DashBoard from "./components/DashBoard/DashBoard";
+import StudentDashboard from "./components/Student/StudentDashboard";
 import Home from "./components/Login/Home";
 import React from "react";
 import axios from "axios";
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route exact path="/dashboard" element={<DashBoard />} />
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/dashboard/allprojects" element={<StudentDashboard />} />
         </Routes>
       </div>
     </Router>

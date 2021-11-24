@@ -74,7 +74,53 @@ module.exports = {
         throw new Error("Not found");
       } else {
         res.status(200).send({
-          message: "Succesfully deleted!"
+          message: "Succesfully deleted!",
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: err.message,
+      });
+    }
+  },
+  getAllProjects: async (req, res) => {
+    try {
+      let professors = await User.find();
+      let result = [];
+
+      for (let i in professors) {
+        result.push(removeSensitiveDetails(professors[i]));
+      }
+
+      // console.log(result);
+
+      res.status(200).send(result);
+    } catch (err) {
+      res.status(500).send({
+        message: err.message,
+      });
+    }
+  },
+  editProject: async (req, res) => {
+    console.log(req.body);
+    try {
+      const modifiedProject = await User.updateOne(
+        { emailId: req.user.emailId, "projectList._id": req.body.projectId },
+        {
+          $set: {
+            "projectList.$.projectName": req.body.projectName,
+            "projectList.$.description": req.body.description,
+          },
+        }
+      );
+
+      if (modifiedProject.modifiedCount == 0) {
+        res.statusCode = 404;
+        // TODO: use a middleware for error handling
+        throw new Error("Not found / No Changes");
+      } else {
+        res.status(200).send({
+          message: "Succesfully edited!",
         });
       }
     } catch (err) {

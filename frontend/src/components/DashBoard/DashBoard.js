@@ -4,9 +4,11 @@ import "./Dashboard.css";
 import ProjectDescription from "./ProjectDescription";
 import ProjectName from "./ProjectName";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 export default class DashBoard extends Component {
   state = {
+    professorName: null,
     projectName: null,
     description: null,
     phoneNum: null,
@@ -14,6 +16,14 @@ export default class DashBoard extends Component {
     selectedProjectIndex: -1,
     addingNewProject: false,
     projectData: [],
+    professorData: {},
+    redirectToHome: false,
+    selectAProject: true,
+  };
+
+  logout = () => {
+    axios.get("users/logout");
+    this.setState({ redirectToHome: true });
   };
 
   getProfessorDetails = async () => {
@@ -21,8 +31,6 @@ export default class DashBoard extends Component {
     const res = await axios.get("dashboard/", { withCredentials: true });
     if (res.status === 200) {
       return res.data;
-    } else {
-      // TODO: get all project from the backend
     }
   };
 
@@ -39,7 +47,8 @@ export default class DashBoard extends Component {
         description: data.projectList[i].description,
       });
     }
-
+    this.setState({ professorData: data });
+    this.setState({ professorName: data.professorName });
     this.setState({ projectData: temp });
   };
 
@@ -48,11 +57,12 @@ export default class DashBoard extends Component {
     // const res = {status: 200};
 
     // FIXME: either as student or as professor
-    
-    if (200 === 200) {
+    try {
       const data = await this.getProfessorDetails();
       // console.log(data);
       this.processProjectData(data);
+    } catch (err) {
+      alert(err.response.data.message);
     }
     // this.setState(this.state.projectData[0]);
   }
@@ -81,15 +91,17 @@ export default class DashBoard extends Component {
   projectCardClicked = (index) => {
     this.setState(this.state.projectData[index]);
     this.setState({ selectedProjectIndex: index });
+    this.setState({ selectAProject: false });
   };
 
   addNewProject = () => {
     this.setState({ addingNewProject: true });
+    this.setState({ selectAProject: false });
     this.setState({
       projectName: "",
       description: "",
-      phoneNum: "",
-      emailId: "",
+      emailId: this.state.professorData.emailId,
+      phoneNum: this.state.professorData.mobileNum,
     });
     this.setState({ selectedProjectIndex: -1 });
   };
@@ -147,27 +159,51 @@ export default class DashBoard extends Component {
       })
       .catch((err) => {
         // TODO: handle this also
-        console.log(err.message);
+        alert(err.response.data.message);
       });
   };
 
+  handleExistingProjectEdit = async (data) => {
+    // console.log("Edited.....");
+    data.projectId = this.state.projectData[this.state.selectedProjectIndex].id;
+    // console.log(data);
+    try {
+      let res = await axios.patch("/dashboard/edit", data);
+      // console.log(res);
+      if (res.status === 200) {
+        let temp = this.state.projectData;
+        temp[this.state.selectedProjectIndex].projectName = data.projectName;
+        temp[this.state.selectedProjectIndex].description = data.description;
+        this.setState({ projectData: temp });
+        alert("Saved Successfully!");
+      }
+    } catch (err) {
+      // console.log(err);
+      alert(err.response.data.message);
+    }
+  };
+
   render() {
-    var list = this.state.projectData;
+    let list = this.state.projectData;
 
     return (
       <div>
+        {this.state.redirectToHome && <Navigate to="/" />}
         <center>
           <h1 className="dashboard-title">
             <Icon className="dashboard-title-icon" name="student" />
             PROJECT DASHBOARD
           </h1>
+          <p className="user-account-info-text">
+            Welcome! {this.state.professorName}
+          </p>
         </center>
         <Segment placeholder>
           <Grid columns={2} relaxed="very" stackable>
             <Grid.Column>
               <div className="project-list-title">
                 <center>
-                  <h3>Projects List</h3>
+                  <h3 className="user-account-info-text">Projects List</h3>
                 </center>
 
                 <Card.Group
@@ -198,9 +234,17 @@ export default class DashBoard extends Component {
                 </div>
               </center>
             </Grid.Column>
-
             <Grid.Column verticalAlign="middle">
-              {this.state.addingNewProject ? (
+              {this.state.selectAProject ? (
+                <p className="user-account-info-text">
+                  {" "}
+                  Please select a project
+                  <br />
+                  OR
+                  <br />
+                  Add a new one!{" "}
+                </p>
+              ) : this.state.addingNewProject ? (
                 <ProjectDescription
                   projectData={{
                     projectName: this.state.projectName,
@@ -220,6 +264,7 @@ export default class DashBoard extends Component {
                     emailId: this.state.emailId,
                   }}
                   handleChange={this.handleChange}
+                  handleExistingProjectEdit={this.handleExistingProjectEdit}
                   deleteCurrentProject={this.deleteCurrentProject}
                 />
               )}
@@ -230,6 +275,14 @@ export default class DashBoard extends Component {
             <Icon disabled name="arrow alternate circle right" />{" "}
           </Divider>
         </Segment>
+        <center>
+          <Button
+            negative
+            icon="sign-out"
+            content="Logout"
+            onClick={this.logout}
+          />
+        </center>
       </div>
     );
   }
