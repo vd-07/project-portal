@@ -2,6 +2,11 @@
   display: flex;
 }
 
+.user-account-info-text {
+  color: #8b8b8b;
+  text-align: center;
+  font-size: 30px;
+}
 /* .project-list-title {
     width: 100%;
     align-items: center;
@@ -16,10 +21,11 @@
   display: flex;
 }
 
-.ui.placeholder.segment .button {
+/* FIXME: rleative position of buttons */
+/* .ui.placeholder.segment .button {
   margin-left: 0 !important;
   margin-right: 10px !important;
-}
+} */
 
 .inner-action-buttons-container {
   display: flex;

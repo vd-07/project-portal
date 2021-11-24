@@ -30,12 +30,12 @@ router.post("/register", forwardAuthenticated, (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.send(errors);
+    res.status(403).send(errors);
   } else {
     User.findOne({ emailId: emailId }).then((user) => {
       if (user) {
         errors.push({ msg: "emailId already exists" });
-        res.send(errors);
+        res.status(403).send(errors);
       } else {
         const newUser = new User({
           professorName,
@@ -51,12 +51,8 @@ router.post("/register", forwardAuthenticated, (req, res) => {
             newUser
               .save()
               .then((user) => {
-                req.flash(
-                  "success_msg",
-                  "You are now registered and can log in"
-                );
                 res.status(200).send({
-                  message: "Succesfully registered! Please login"
+                  msg: "Succesfully registered! Please login",
                 });
               })
               .catch((err) => console.log(err));
@@ -69,10 +65,25 @@ router.post("/register", forwardAuthenticated, (req, res) => {
 
 // Login
 router.post("/login", forwardAuthenticated, (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/users/login",
-    failureFlash: true,
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(404).send({
+        message: "User not found / Incorrect Password",
+      });
+    } else {
+      // console.log(user);
+      req.logIn(user, function (err) {
+        if (err) {
+          return next(err);
+        }
+        return res.status(200).send({
+          message: "Successfully logged in!"
+        });
+      });
+    }
   })(req, res, next);
 });
 
@@ -80,7 +91,7 @@ router.post("/login", forwardAuthenticated, (req, res, next) => {
 router.get("/logout", (req, res) => {
   req.logout();
   res.status(200).send({
-    message: "Succesfully signed out"
+    message: "Succesfully signed out",
   });
 });
 

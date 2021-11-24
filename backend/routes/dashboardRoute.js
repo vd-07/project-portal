@@ -10,11 +10,13 @@ const dashboardController = require("../controllers/dashboardController");
 router.get("/", ensureAuthenticated, dashboardController.getProfessorData);
 // router.post("/create/professor", dashboardController.createProfessor);
 router.post("/create", ensureAuthenticated, dashboardController.createProject);
+router.patch("/edit", ensureAuthenticated, dashboardController.editProject);
 router.delete(
   "/delete",
   ensureAuthenticated,
   dashboardController.deleteProject
-);
+); 
+router.get("/allprojects", dashboardController.getAllProjects);
 // TODO: delete project
 // TODO: save an edited project
 

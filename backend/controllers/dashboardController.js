@@ -8,6 +8,12 @@ module.exports = {
     dashboardSerives.createProject(req, res).catch(next);
   },
   deleteProject: (req, res, next) => {
-      dashboardSerives.deleteProject(req, res).catch(next);
+    dashboardSerives.deleteProject(req, res).catch(next);
+  },
+  getAllProjects: (req, res, next) => {
+    dashboardSerives.getAllProjects(req, res).catch(next);
+  },
+  editProject: (req, res, next) => {
+    dashboardSerives.editProject(req, res).catch(next);
   }
 };

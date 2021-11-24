@@ -26,6 +26,13 @@ export default class ProjectDescription extends Component {
             phoneNum,
             emailId,
           });
+        } else if (this.props.handleExistingProjectEdit) {
+          this.props.handleExistingProjectEdit({
+            projectName,
+            description,
+            phoneNum,
+            emailId,
+          });
         }
       }
     }
@@ -63,6 +70,8 @@ export default class ProjectDescription extends Component {
           <Form.Field>
             <label>Phone Number</label>
             <input
+              // #TODO: type = phone number
+              disabled
               value={this.props.projectData && this.props.projectData.phoneNum}
               placeholder="Enter 10 digits number"
               onChange={(e) =>
@@ -73,6 +82,8 @@ export default class ProjectDescription extends Component {
           <Form.Field>
             <label>Email ID</label>
             <input
+              disabled
+              type="email"
               value={this.props.projectData && this.props.projectData.emailId}
               placeholder="Email ID"
               onChange={(e) =>
