@@ -6,7 +6,9 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build-docker": "docker build -t backend-project-portal .",
+    "run-docker": "docker run -d -p 8080:8080 backend-project-portal"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

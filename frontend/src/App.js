@@ -6,7 +6,7 @@ import React from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-axios.defaults.baseURL = "http://localhost:8080/";
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URI;
 axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 axios.defaults.withCredentials = true;
