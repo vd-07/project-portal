@@ -21,7 +21,8 @@ module.exports = async function (app, express) {
       Path: "/",
       cookie: {
         secure: true,
-        maxAge: 600000000
+        maxAge: 600000000,
+        SameSite: 'none'
       }
     })
   );
