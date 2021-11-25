@@ -2,4 +2,4 @@ build:
   docker:
     web: backend/Dockerfile
 run:
-  web: cd backend/ && node app.js
+  web: node app.js
