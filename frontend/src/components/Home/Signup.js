@@ -51,14 +51,12 @@ export default class Signup extends Component {
         alert(res.data.msg);
       }
     } catch (err) {
-      if (err.response.status === 403) {
-        console.log(err.response);
+      if (err.response && err.response.status === 403) {
         alert(err.response.data[0].msg);
         // this.props.setSignUpState(false);
       } else {
         alert("Something went wrong");
       }
-      console.log(err);
     }
   };
 

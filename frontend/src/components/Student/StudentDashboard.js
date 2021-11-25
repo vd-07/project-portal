@@ -44,7 +44,9 @@ export default class StudentDashboard extends Component {
       let res = await axios.get("dashboard/allprojects");
       this.processProjectData(res.data);
     } catch (err) {
-      alert(err.response.data.message);
+      if (err.response && err.response.data && err.response.data.message)
+        alert(err.response.data.message);
+      else alert("Unknown error");
     }
   }
 
@@ -64,13 +66,13 @@ export default class StudentDashboard extends Component {
             onClick={this.goToHome}
             style={{ marginTop: 10, marginBottom: 10 }}
           />
-        <Divider horizontal>
-          <Header as="h2">
-            <Icon name="book" />
-            Project List
-          </Header>
-        </Divider>
-        {/* FIXME: Center alignment */}
+          <Divider horizontal>
+            <Header as="h2">
+              <Icon name="book" />
+              Project List
+            </Header>
+          </Divider>
+          {/* FIXME: Center alignment */}
           <Grid columns={3}>
             {this.state.projectData.map((data, i) => (
               <ProjectDetails

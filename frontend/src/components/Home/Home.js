@@ -37,22 +37,24 @@ export default class Home extends Component {
       />
     );
 
-    let studentProfessorChoice = <Segment placeholder style={{ height: 250 }}>
-    <Button
-      onClick={this.redirectToSignIn}
-      content="Proceed as Professor"
-      icon="user"
-      size="medium"
-    />
-    <div style={{ marginTop: 20 }}>
-      <Button
-        onClick={this.redirectToStudentDashboard}
-        content="Proceed as Student"
-        icon="users"
-        size="medium"
-      />
-    </div>
-  </Segment>
+    let studentProfessorChoice = (
+      <Segment placeholder style={{ height: 250 }}>
+        <Button
+          onClick={this.redirectToSignIn}
+          content="Proceed as Professor"
+          icon="user"
+          size="medium"
+        />
+        <div style={{ marginTop: 20 }}>
+          <Button
+            onClick={this.redirectToStudentDashboard}
+            content="Proceed as Student"
+            icon="users"
+            size="medium"
+          />
+        </div>
+      </Segment>
+    );
 
     return (
       <div>
@@ -63,7 +65,7 @@ export default class Home extends Component {
             PROJECT PORTAL
           </h1>
         </center>
-        {this.state.displayChoice ? studentProfessorChoice: loginOrSignup}
+        {this.state.displayChoice ? studentProfessorChoice : loginOrSignup}
       </div>
     );
   }
