@@ -33,6 +33,13 @@
   margin-left: auto;
 }
 
+.error-message-custom {
+  font-size: 12px;
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
 @media screen and (max-width: 767px) {
   .divider {
     display: none;

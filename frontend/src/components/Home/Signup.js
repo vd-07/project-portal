@@ -133,12 +133,6 @@ export default class Signup extends Component {
                 size="medium"
               />
               <br />
-              <Button
-                onClick={this.props.redirectToStudentDashboard}
-                content="Proceed as student"
-                icon="play"
-                size="medium"
-              />
             </Grid.Column>
           </Grid>
 

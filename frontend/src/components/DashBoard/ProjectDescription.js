@@ -3,7 +3,7 @@ import { Button, Form, TextArea } from "semantic-ui-react";
 
 export default class ProjectDescription extends Component {
   state = {
-    errorSave: false,
+    errorMessage: null
   };
 
   saveClicked = () => {
@@ -17,7 +17,11 @@ export default class ProjectDescription extends Component {
         phoneNum === "" ||
         emailId === ""
       ) {
-        this.setState({ errorSave: true });
+        if(projectName === "") {
+          this.setState({ errorMessage: "Please enter project name"});
+        } else if(description === "") {
+          this.setState({ errorMessage: "Please enter project description"});
+        }
       } else {
         if (this.props.handleNewProjectSave) {
           this.props.handleNewProjectSave({
@@ -92,10 +96,17 @@ export default class ProjectDescription extends Component {
             />
           </Form.Field>
         </Form>
+        <p className="error-message-custom">{this.props.errorMessage}</p>
         <div className="action-buttons">
           <div className="inner-action-buttons-container">
-            <Button onClick={this.saveClicked}>Save</Button>
-            <Button onClick={this.props.deleteCurrentProject}>Delete</Button>
+            <div style={{ marginRight: 10 }}>
+              <Button onClick={this.saveClicked}>
+                {this.props.handleNewProjectSave ? "Create" : "Save"}
+              </Button>
+            </div>
+            {this.props.handleNewProjectSave ? null : (
+              <Button onClick={this.props.deleteCurrentProject}>Delete</Button>
+            )}
           </div>
         </div>
       </div>

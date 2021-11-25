@@ -42,7 +42,6 @@ export default class Login extends Component {
     } catch (err) {
       console.log(err.response);
       alert(err.response.data.message);
-      
     }
   };
 
@@ -87,7 +86,7 @@ export default class Login extends Component {
                 size="medium"
               />
               <br />
-              <Button onClick={this.props.redirectToStudentDashboard} content="Proceed as student" icon="play" size="medium" />
+              {/* <Button onClick={this.props.redirectToStudentDashboard} content="Proceed as student" icon="play" size="medium" /> */}
             </Grid.Column>
           </Grid>
 

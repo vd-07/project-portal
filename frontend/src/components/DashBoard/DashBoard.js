@@ -19,6 +19,7 @@ export default class DashBoard extends Component {
     professorData: {},
     redirectToHome: false,
     selectAProject: true,
+    errorMessage: null,
   };
 
   logout = () => {
@@ -35,7 +36,6 @@ export default class DashBoard extends Component {
   };
 
   processProjectData = (data) => {
-    console.log(data);
     let temp = [];
     for (let i = 0; i < data.projectList.length; ++i) {
       temp.push({
@@ -73,9 +73,19 @@ export default class DashBoard extends Component {
     switch (type) {
       case "projectName":
         this.setState({ projectName: value });
+        if (value === "") {
+          this.setState({ errorMessage: "Please enter Project Name" });
+        } else {
+          this.setState({ errorMessage: null });
+        }
         break;
       case "description":
         this.setState({ description: value });
+        if (value === "") {
+          this.setState({ errorMessage: "Please enter Project Description" });
+        } else {
+          this.setState({ errorMessage: null });
+        }
         break;
       case "phoneNum":
         this.setState({ phoneNum: value });
@@ -92,6 +102,7 @@ export default class DashBoard extends Component {
     this.setState(this.state.projectData[index]);
     this.setState({ selectedProjectIndex: index });
     this.setState({ selectAProject: false });
+    this.setState({ errorMessage: null });
   };
 
   addNewProject = () => {
@@ -252,6 +263,7 @@ export default class DashBoard extends Component {
                     phoneNum: this.state.phoneNum,
                     emailId: this.state.emailId,
                   }}
+                  errorMessage={this.state.errorMessage}
                   handleChange={this.handleChange}
                   handleNewProjectSave={this.handleNewProjectSave}
                 />
@@ -263,6 +275,7 @@ export default class DashBoard extends Component {
                     phoneNum: this.state.phoneNum,
                     emailId: this.state.emailId,
                   }}
+                  errorMessage= {this.state.errorMessage}
                   handleChange={this.handleChange}
                   handleExistingProjectEdit={this.handleExistingProjectEdit}
                   deleteCurrentProject={this.deleteCurrentProject}

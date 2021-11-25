@@ -1,7 +1,7 @@
 import "./App.css";
 import DashBoard from "./components/DashBoard/DashBoard";
 import StudentDashboard from "./components/Student/StudentDashboard";
-import Home from "./components/Login/Home";
+import Home from "./components/Home/Home";
 import React from "react";
 import axios from "axios";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
