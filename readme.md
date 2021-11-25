@@ -133,7 +133,3 @@ mongodb+srv://<user>:<password>@cluster0.ygl2g.mongodb.net/myFirstDatabase?retry
     ```
 
     > The default port is 3000, can be configured in `.env` file
-
-
-
-
