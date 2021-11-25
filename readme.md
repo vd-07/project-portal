@@ -13,14 +13,14 @@
 
 # Contents &#128218;
 
-* [Why](why) 
-* [Features](responsibilities)
-* [Directory Structure](directory-structure)
-* [Installation](installation)
-* [Deployment](deployment)
-* [Usage](usage)
+* [Why](#why) 
+* [Features](#responsibilities)
+* [Directory Structure](#directory-structure)
+* [Installation](#installation)
 
 #
+
+<a name="why" />
 
 ## Why &#10067;
 
@@ -28,6 +28,8 @@ Before the pandemic, professors used to discuss projects they are mentoring and 
 
 During the pandemic, contacting professors one by one over call or social media can become a hassle. Moreover, students may not be familiar with the professors of different branches or of different areas of expertise and the projects they are offering. 
 
+
+<a name="responsibilities" />
 
 ## Features &#127760;
 
@@ -46,6 +48,7 @@ During the pandemic, contacting professors one by one over call or social media 
 - Add a new Project
 
 
+<a name="directory-structure" />
 
 ## Directory Structure &#128193;
 
@@ -74,6 +77,7 @@ readme.md : current readme file
 .gitignore
 ```
 
+<a name="installation" />
 
 ## Installation &#9881;
 
