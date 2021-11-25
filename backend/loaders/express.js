@@ -22,7 +22,7 @@ module.exports = async function (app, express) {
       cookie: {
         secure: true,
         maxAge: 600000000,
-        SameSite: 'none'
+        sameSite: 'none'
       }
     })
   );
