@@ -4,7 +4,7 @@ module.exports = {
       return next();
     }
     // delete res.cookie;
-    
+
     res.status(401).send({
       message: "Please log in to view that resource",
     });

@@ -15,5 +15,5 @@ module.exports = {
   },
   editProject: (req, res, next) => {
     dashboardSerives.editProject(req, res).catch(next);
-  }
+  },
 };
