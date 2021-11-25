@@ -40,7 +40,7 @@ export default class Login extends Component {
         this.setState({ redirectToDash: true });
       }
     } catch (err) {
-      if (res.response && res.response.data && res.response.data.message)
+      if (err.response && err.response.data && err.response.data.message)
         alert(err.response.data.message);
       else alert("Unknown error");
     }
