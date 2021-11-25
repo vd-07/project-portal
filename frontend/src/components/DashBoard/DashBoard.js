@@ -62,7 +62,9 @@ export default class DashBoard extends Component {
       // console.log(data);
       this.processProjectData(data);
     } catch (err) {
-      alert(err.response.data.message);
+      if (err.response && err.response.data && err.response.data.message)
+        alert(err.response.data.message);
+      else alert("Unknown error");
     }
     // this.setState(this.state.projectData[0]);
   }
@@ -130,7 +132,8 @@ export default class DashBoard extends Component {
         this.updateAfterSaving();
       }
     } catch (err) {
-      console.log(err.message);
+      if (err.message) alert(err.message);
+      else alert("Unknown error");
     }
   };
 
@@ -190,7 +193,9 @@ export default class DashBoard extends Component {
       }
     } catch (err) {
       // console.log(err);
-      alert(err.response.data.message);
+      if (err.response && err.response.data && err.response.data.message)
+        alert(err.response.data.message);
+      else alert("Unknown error");
     }
   };
 
@@ -275,7 +280,7 @@ export default class DashBoard extends Component {
                     phoneNum: this.state.phoneNum,
                     emailId: this.state.emailId,
                   }}
-                  errorMessage= {this.state.errorMessage}
+                  errorMessage={this.state.errorMessage}
                   handleChange={this.handleChange}
                   handleExistingProjectEdit={this.handleExistingProjectEdit}
                   deleteCurrentProject={this.deleteCurrentProject}

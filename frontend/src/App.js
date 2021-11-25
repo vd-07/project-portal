@@ -18,7 +18,11 @@ function App() {
         <Routes>
           <Route exact path="/dashboard" element={<DashBoard />} />
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/dashboard/allprojects" element={<StudentDashboard />} />
+          <Route
+            exact
+            path="/dashboard/allprojects"
+            element={<StudentDashboard />}
+          />
         </Routes>
       </div>
     </Router>

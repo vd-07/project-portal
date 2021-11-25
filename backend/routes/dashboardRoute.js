@@ -15,7 +15,7 @@ router.delete(
   "/delete",
   ensureAuthenticated,
   dashboardController.deleteProject
-); 
+);
 router.get("/allprojects", dashboardController.getAllProjects);
 // TODO: delete project
 // TODO: save an edited project

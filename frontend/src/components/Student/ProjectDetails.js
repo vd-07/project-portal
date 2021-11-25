@@ -7,7 +7,15 @@ export default class ProjectDetails extends Component {
       <Grid.Column mobile={16} tablet={8} computer={5}>
         <Card>
           <Card.Content header={this.props.projectName} />
-          <Card.Content style={{ marginTop: 20, maxHeight: 200, minHeight: 200, overflowY: "scroll" }} description={this.props.description} />
+          <Card.Content
+            style={{
+              marginTop: 20,
+              maxHeight: 200,
+              minHeight: 200,
+              overflowY: "scroll",
+            }}
+            description={this.props.description}
+          />
           <Card.Content extra>
             <Icon name="user" />
             {this.props.professorName}

@@ -3,7 +3,7 @@ import { Button, Form, TextArea } from "semantic-ui-react";
 
 export default class ProjectDescription extends Component {
   state = {
-    errorMessage: null
+    errorMessage: null,
   };
 
   saveClicked = () => {
@@ -17,10 +17,10 @@ export default class ProjectDescription extends Component {
         phoneNum === "" ||
         emailId === ""
       ) {
-        if(projectName === "") {
-          this.setState({ errorMessage: "Please enter project name"});
-        } else if(description === "") {
-          this.setState({ errorMessage: "Please enter project description"});
+        if (projectName === "") {
+          this.setState({ errorMessage: "Please enter project name" });
+        } else if (description === "") {
+          this.setState({ errorMessage: "Please enter project description" });
         }
       } else {
         if (this.props.handleNewProjectSave) {
