@@ -15,6 +15,7 @@
 * [Features](#responsibilities)
 * [Directory Structure](#directory-structure)
 * [Installation](#installation)
+* [Testing](#testing)
 
 #
 
@@ -135,3 +136,20 @@ mongodb+srv://<user>:<password>@cluster0.ygl2g.mongodb.net/myFirstDatabase?retry
     ```
 
     > The default port is 3000, can be configured in `.env` file
+
+
+<a name="testing" />
+
+## Testing :hammer_and_pick:
+
+Testing has been done using `Jest` for the backend. To run tests on backend and get a coverage report, run on terminal
+```
+cd backend
+```
+```
+npm test
+```
+
+**Continuous Integration** is setup using Github Actions and Workflows which makes sure that errors are not introduced on the `main` branch while performing `push` or `merge` operation on the same. 
+
+**Continuous Deployment** is setup on Netlify for the frontend and Heroku for the backend, but only for the `main` branch. So whenever a new change is introduced into the `main` branch, the new code automatically gets deployed on the respective servers.
