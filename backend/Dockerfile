@@ -1,4 +1,5 @@
 # PROD CONFIG
+# Using lightweight distribution of node
 FROM node:14-alpine as prod
 
 WORKDIR /app

@@ -1,5 +1,6 @@
 const dashboardSerives = require("../services/dashboardServices");
 
+// controllers for the dashboard
 module.exports = {
   getProfessorData: (req, res, next) => {
     dashboardSerives.getProfessorData(req, res).catch(next);

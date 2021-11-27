@@ -7,6 +7,7 @@ module.exports = {
     const { professorName, emailId, mobileNum, password, password2 } = req.body;
     let errors = [];
 
+    // edge cases
     if (!professorName || !emailId || !mobileNum || !password || !password2) {
       errors.push({ msg: "Please enter all fields" });
     }
@@ -22,6 +23,7 @@ module.exports = {
     if (errors.length > 0) {
       res.status(403).send(errors);
     } else {
+      // Register
       User.findOne({ emailId: emailId }).then((user) => {
         if (user) {
           errors.push({ msg: "emailId already exists" });
@@ -33,7 +35,7 @@ module.exports = {
             mobileNum,
             password,
           });
-
+          // save the hash of password by generating a salt
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) throw err;
@@ -53,6 +55,7 @@ module.exports = {
     }
   },
   login: (req, res, next) => {
+    // using passport to authenticate
     passport.authenticate("local", function (err, user, info) {
       if (err) {
         return next(err);
@@ -62,7 +65,6 @@ module.exports = {
           message: "User not found / Incorrect Password",
         });
       } else {
-        // console.log(user);
         req.logIn(user, function (err) {
           if (err) {
             return next(err);

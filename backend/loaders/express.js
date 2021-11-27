@@ -7,10 +7,12 @@ const session = require("express-session");
 require("../config/passport")(passport);
 
 module.exports = async function (app, express) {
+  // middlewares
   app.use(cors({ credentials: true, origin: true }));
   app.use(require("morgan")("dev"));
   app.use(express.json());
   app.set("trust proxy", 1);
+
   // Express session
   app.use(
     session({
@@ -40,7 +42,7 @@ module.exports = async function (app, express) {
     const err = new Error(`404 not found`);
     res.status(404).send(err.message);
   });
-  // ...More middlewares
+
   // Return the express app
   return app;
 };

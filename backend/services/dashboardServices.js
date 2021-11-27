@@ -1,6 +1,7 @@
 const { remove } = require("../models/User");
 const User = require("../models/User");
 
+// remove access tokens and passwords
 const removeSensitiveDetails = (user) => {
   let result = {
     professorName: user.professorName,
@@ -15,24 +16,6 @@ module.exports = {
   getProfessorData: async (req, res) => {
     res.status(200).json(removeSensitiveDetails(req.user));
   },
-  // createProfessor: async (req, res) => {
-  //   try {
-  //     const post = new User({
-  //       professorName: req.body.name,
-  //       password: req.body.password,
-  //       mobileNum: req.body.mobilenum,
-  //       emailId: req.body.emailid,
-  //     });
-
-  //     // save to mongoDB Atlas
-  //     const savedPost = await post.save();
-  //     res.json(savedPost);
-  //   } catch (err) {
-  //     res.status(500).send({
-  //       message: err.message,
-  //     });
-  //   }
-  // },
   createProject: async (req, res) => {
     try {
       const objProject = {
@@ -40,16 +23,17 @@ module.exports = {
         description: req.body.description,
       };
 
+      // insert into the database
       const updatedProject = await User.updateOne(
         { emailId: req.user.emailId },
         { $push: { projectList: objProject } }
       );
 
-      // console.log(req.user);
-
+      // if no change/not found
       if (updatedProject.modifiedCount == 0) {
         res.status(404).send();
       } else {
+        // return updated data
         const userDetail = await User.findById(req.user._id);
         res.status(200).json(removeSensitiveDetails(userDetail));
       }
@@ -61,16 +45,16 @@ module.exports = {
   },
   deleteProject: async (req, res) => {
     const { projectId } = req.body;
-    // console.log(req);
     try {
+      // remove from the database
       const deletedProject = await User.updateOne(
         { emailId: req.user.emailId },
         { $pull: { projectList: { _id: projectId } } }
       );
 
+      // if no change/not found
       if (deletedProject.modifiedCount == 0) {
         res.statusCode = 404;
-        // TODO: use a middleware for error handling
         throw new Error("Not found");
       } else {
         res.status(200).send({
@@ -88,12 +72,10 @@ module.exports = {
       let professors = await User.find();
       let result = [];
 
+      // remove sensitive info
       for (let i in professors) {
         result.push(removeSensitiveDetails(professors[i]));
       }
-
-      // console.log(result);
-
       res.status(200).send(result);
     } catch (err) {
       res.status(500).send({
@@ -104,6 +86,7 @@ module.exports = {
   editProject: async (req, res) => {
     console.log(req.body);
     try {
+      // edit a project wrt its _id as well as its professors email id
       const modifiedProject = await User.updateOne(
         { emailId: req.user.emailId, "projectList._id": req.body.projectId },
         {
@@ -114,9 +97,9 @@ module.exports = {
         }
       );
 
+      // if no change/not found
       if (modifiedProject.modifiedCount == 0) {
         res.statusCode = 404;
-        // TODO: use a middleware for error handling
         throw new Error("Not found / No Changes");
       } else {
         res.status(200).send({

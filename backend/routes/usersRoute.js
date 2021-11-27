@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { forwardAuthenticated } = require("../config/auth");
 const usersController = require("../controllers/usersController");
-const passport = require("passport");
 
 // Register
 router.post("/register", forwardAuthenticated, usersController.register);
