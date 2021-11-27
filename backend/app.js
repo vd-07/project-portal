@@ -2,6 +2,7 @@ const loaders = require("./loaders");
 const express = require("express");
 const config = require("./config");
 
+// start the server
 async function startServer() {
   const app = express();
 
@@ -14,6 +15,6 @@ async function startServer() {
     }
     console.log(`Server running at http://localhost:${process.env.PORT}`);
   });
-};
+}
 
 startServer();

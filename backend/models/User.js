@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// Schema for saving professor data
+// projectList: All projects related to a single professor
 const UserSchema = mongoose.Schema({
   professorName: {
     type: String,

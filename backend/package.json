@@ -7,10 +7,13 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "test": "jest --config ./tests/jest.config.js",
     "build-docker": "docker build -t backend-project-portal .",
     "run-docker": "docker run -d -p 8080:8080 backend-project-portal"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^2.1.0",
+    "jest": "^27.3.1",
     "nodemon": "^2.0.15"
   },
   "dependencies": {

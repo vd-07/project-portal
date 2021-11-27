@@ -6,9 +6,8 @@ const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 // controllers
 const dashboardController = require("../controllers/dashboardController");
 
-// TODO: 1. change api(getProfessor) name 2. Send data
+// endpoints related to the dashboard
 router.get("/", ensureAuthenticated, dashboardController.getProfessorData);
-// router.post("/create/professor", dashboardController.createProfessor);
 router.post("/create", ensureAuthenticated, dashboardController.createProject);
 router.patch("/edit", ensureAuthenticated, dashboardController.editProject);
 router.delete(
@@ -17,7 +16,5 @@ router.delete(
   dashboardController.deleteProject
 );
 router.get("/allprojects", dashboardController.getAllProjects);
-// TODO: delete project
-// TODO: save an edited project
 
 module.exports = router;

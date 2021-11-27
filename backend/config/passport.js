@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
 module.exports = function (passport) {
+  // define strategy for authentication
   passport.use(
     new LocalStrategy(
       { usernameField: "emailId" },
@@ -33,10 +34,12 @@ module.exports = function (passport) {
     )
   );
 
+  // to save user data after authentication
   passport.serializeUser(function (user, done) {
     done(null, user.id);
   });
 
+  // to retrieve user data from session
   passport.deserializeUser(function (id, done) {
     User.findById(id, function (err, user) {
       done(err, user);
